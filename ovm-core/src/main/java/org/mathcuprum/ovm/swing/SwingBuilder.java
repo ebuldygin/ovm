@@ -1,5 +1,6 @@
 package org.mathcuprum.ovm.swing;
 
+import org.mathcuprum.ovm.swing.widgets.RangedNumberInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.mathcuprum.ovm.core.Descriptor;
@@ -100,6 +101,8 @@ public class SwingBuilder {
         SwingWidget result;
         if (isLogical(descriptor) && descriptor.converterFor(Boolean.class) != null) {
             result = addLogicalComponent(descriptor);
+        } else if (isRangedNumber(descriptor)) {
+            result = addRangedNumberComponent(descriptor);
         } else {
             result = addTextComponent(descriptor);
         }
@@ -117,10 +120,21 @@ public class SwingBuilder {
                 || boolean.class.equals(descriptor.getValueType());
     }
 
+    private boolean isRangedNumber(ParameterDescriptor descriptor) {
+        return RangedNumber.class.equals(descriptor.getValueType());
+    }
+
     private SwingWidget addTextComponent(ParameterDescriptor descriptor) {
         InputText textField = new InputText(target, descriptor);
         addLabeledWidget(textField.getLabel(), textField.getComponent());
         return textField;
+    }
+
+
+    private SwingWidget addRangedNumberComponent(ParameterDescriptor descriptor) {
+        RangedNumberInput rangedInput = new RangedNumberInput(target, descriptor);
+        addLabeledWidget(rangedInput.getLabel(), rangedInput.getSliderWithValue());
+        return rangedInput;
     }
 
     private SwingWidget addLogicalComponent(ParameterDescriptor descriptor) {

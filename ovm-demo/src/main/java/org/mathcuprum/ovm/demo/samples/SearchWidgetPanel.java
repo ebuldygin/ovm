@@ -3,6 +3,7 @@ package org.mathcuprum.ovm.demo.samples;
 import org.mathcuprum.ovm.core.meta.Form;
 import org.mathcuprum.ovm.core.meta.Parameter;
 import org.mathcuprum.ovm.demo.DemoPanel;
+import org.mathcuprum.ovm.swing.RangedNumber;
 import org.mathcuprum.ovm.swing.SwingForm;
 import org.mathcuprum.ovm.swing.SwingWidget;
 
@@ -20,6 +21,7 @@ public class SearchWidgetPanel extends DemoPanel<SearchWidgetPanel.InOutTextForm
     public static class InOutTextForm {
 
         private String inputText;
+        private RangedNumber rangedNumber;
 
         @Parameter(title = "Введите текст", name = "input", order = 10)
         public String getInputText() {
@@ -35,11 +37,30 @@ public class SearchWidgetPanel extends DemoPanel<SearchWidgetPanel.InOutTextForm
             return inputText;
         }
 
+        @Parameter(title = "Выбор из диапазона", name = "rangedIn", order = 30)
+        public RangedNumber getRangedNumber() {
+            return rangedNumber;
+        }
+
+        @Parameter(title = "Выбор из диапазона - значение", name = "rangedOut", order = 40)
+        public Double getRangedNumberValue() {
+            if (rangedNumber != null) {
+                return rangedNumber.getValue();
+            } else {
+                return null;
+            }
+        }
+
+        public void setRangedNumber(RangedNumber rangedNumber) {
+            this.rangedNumber = rangedNumber;
+        }
     }
 
     @Override
     protected SwingForm<InOutTextForm> createSwingForm(Class<InOutTextForm> formClass) {
         SwingForm<InOutTextForm> res = super.createSwingForm(formClass);
+        final SwingWidget rangedIn = (SwingWidget) res.searchById("rangedIn");
+        rangedIn.set(new RangedNumber(-1.0, 1.0, 100));
         final SwingWidget input = (SwingWidget) res.searchById("input");
         final SwingWidget out = (SwingWidget) res.searchById("out");
         out.getComponent().setEnabled(false);
