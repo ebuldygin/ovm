@@ -60,7 +60,9 @@ public class SearchWidgetPanel extends DemoPanel<SearchWidgetPanel.InOutTextForm
     protected SwingForm<InOutTextForm> createSwingForm(Class<InOutTextForm> formClass) {
         SwingForm<InOutTextForm> res = super.createSwingForm(formClass);
         final SwingWidget rangedIn = (SwingWidget) res.searchById("rangedIn");
+        final SwingWidget rangedOut = (SwingWidget) res.searchById("rangedOut");
         rangedIn.set(new RangedNumber(-1.0, 1.0, 100));
+        rangedOut.getComponent().setEnabled(false);
         final SwingWidget input = (SwingWidget) res.searchById("input");
         final SwingWidget out = (SwingWidget) res.searchById("out");
         out.getComponent().setEnabled(false);
